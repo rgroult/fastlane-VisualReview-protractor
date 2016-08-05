@@ -22,6 +22,10 @@ _** Only iOS is supported yet**_
 
 `java -jar <path to jar>/visualreviewclient-<Vxx>.jar -server <VisualReview Server URL> -screenshots_dir <snapshot directory output dir>`
 
+Or 
+
+`java -jar <path to jar>/visualreviewclient-<Vxx>-jar-with-dependencies.jar -server <VisualReview Server URL> -screenshots_dir <snapshot directory output dir>`
+
 ```
 Example: 
 
