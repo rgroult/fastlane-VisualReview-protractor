@@ -30,11 +30,12 @@ import org.json.simple.parser.JSONParser;
 
 public class VisualReviewClient {
     private static  String VR_SERVER = "";
+    private static  String VR_PROJECT_NAME = "";
 
     public static void main(String[] args) {
         System.out.println("started on " + new Date());
         try {
-            if (args.length != 4){
+            if (args.length != 6){
                 help("VisualReviewClient");
                 System.exit(-1);
             }
@@ -46,6 +47,7 @@ public class VisualReviewClient {
             }
 
             VR_SERVER = argsMap.get("-server");
+            VR_PROJECT_NAME = argsMap.get("-project");
             String directory = argsMap.get("-screenshots_dir");
             parseLanguagesDirectory(directory);
         } catch (IOException ioex) {
@@ -56,7 +58,7 @@ public class VisualReviewClient {
 
     public  static void help(String progName){
         System.out.println("usage :");
-        System.out.println(progName +" -server <http://visualReviewHost:port> -screenshots_dir <path to screenshots directory>");
+        System.out.println(progName +" -server <http://visualReviewHost:port> -project <project name> -screenshots_dir <path to screenshots directory>");
     }
 
     public static void parseLanguagesDirectory(String directoryPath) throws IOException {
@@ -64,6 +66,10 @@ public class VisualReviewClient {
         HashMap<String,Integer> runBySuites = new HashMap<String,Integer>();
         File dir = new File(directoryPath);
         File[] languagesDirectoryList = dir.listFiles();
+        if (languagesDirectoryList == null){
+            System.out.println("No screenshots found in "+dir.getAbsolutePath());
+            return;
+        }
         for(File f : languagesDirectoryList){
             if (f.isDirectory()){
                 System.out.println("found language: "+f.getName());
@@ -74,7 +80,7 @@ public class VisualReviewClient {
 
     public static int getRunID(String suiteName,HashMap<String,Integer> runBySuites) throws IOException {
         if (!runBySuites.containsKey(suiteName)){
-            int runId = createRun("TestProject", suiteName);
+            int runId = createRun(VR_PROJECT_NAME, suiteName);
             runBySuites.put(suiteName,runId);
         }
         return runBySuites.get(suiteName);
